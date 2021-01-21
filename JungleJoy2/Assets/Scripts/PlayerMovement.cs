@@ -77,7 +77,10 @@ public class PlayerMovement : MonoBehaviour
          {
              Jump();
          }
-
+         if(Input.GetKeyDown(KeyCode.F))
+         {
+             Attack();
+         }
         }
          if(animationName=="Hurricane Kick" )
          {
@@ -138,8 +141,5 @@ public class PlayerMovement : MonoBehaviour
     private void Attack()
     {
         anim.Play("Hurricane Kick", 0, 0.25f);
-        
-        
-
     }
 }
