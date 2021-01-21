@@ -79,7 +79,10 @@ public class PlayerMovement : MonoBehaviour
          {
              Jump();
          }
-
+         if(Input.GetKeyDown(KeyCode.F))
+         {
+             Attack();
+         }
         }
         
 
@@ -114,5 +117,8 @@ public class PlayerMovement : MonoBehaviour
     {
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
 
+    }
+    private void Attack()
+    {
     }
 }
