@@ -8,6 +8,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;    
     private Vector3 moveDirection;
     public string animationName;
+    public int points = 0;
+
+    public AudioSource sounds;
+    [SerializeField] public AudioClip coinSound;
+    [SerializeField] public AudioClip pearlSound;
 
     [SerializeField] private bool isNotSliding; // is on a slope or not
     public float slideFriction = 0.5f; // ajusting the friction of the slope
@@ -22,24 +27,34 @@ public class PlayerMovement : MonoBehaviour
     //REFERENCES
     private CharacterController controller;
     private Animator anim;
-    
-
-    void OnControllerColliderHit (ControllerColliderHit hit) 
-    {
-        hitNormal = hit.normal;
-        hitPoint = hit.point;
-    }
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
-
+        sounds = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         Move();
+    }
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        hitNormal = hit.normal;
+        hitPoint = hit.point;
+        if (hit.gameObject.tag.Equals("Coin"))
+        {
+            sounds.PlayOneShot(coinSound);
+            hit.gameObject.SendMessage("destroy");
+            points++;
+        }
+        if (hit.gameObject.tag.Equals("Pearl"))
+        {
+            sounds.PlayOneShot(pearlSound);
+            hit.gameObject.SendMessage("destroy");
+            points = points + 10;
+        }
     }
 
     private void Move()
@@ -141,5 +156,10 @@ public class PlayerMovement : MonoBehaviour
     private void Attack()
     {
         anim.Play("Hurricane Kick", 0, 0.25f);
+    }
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 100, 20), "Score : " + points);
     }
 }

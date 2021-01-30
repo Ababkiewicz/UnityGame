@@ -64,17 +64,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Collectable\CollectableScript.cs" />
     <Compile Include="Assets\Enemies\Spider\FSP_ContinuousRotation.cs" />
     <Compile Include="Assets\Scripts\CameraControllerNew.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\SpiderAI.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\DemoFree.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\FreeCameraLogic.cs" />
-    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleSampleCharacterControl.cs" />
     <None Include="Assets\Casual Tiny Environment - Jungle Set\Readme.txt" />
-    <None Include="Assets\Supercyan Character Pack Free Sample\Shaders\Legacy\CelShader.shader" />
-    <None Include="Assets\Supercyan Character Pack Free Sample\Shaders\SupercyanShader.shader" />
-    <None Include="Assets\Supercyan Character Pack Free Sample\Shaders\SupercyanShaderLighting.cginc" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
