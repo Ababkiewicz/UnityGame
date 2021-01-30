@@ -11,14 +11,18 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private bool isNotSliding; // is on a slope or not
     public float slideFriction = 0.5f; // ajusting the friction of the slope
+    public float knockbackForce;
+    public float knocbackTime;
+    private float knocbackCounter;
     private Vector3 hitNormal; //orientation of the slope.
 
     private Vector3 hitPoint; //orientation of the slope.
 
     [SerializeField] private float gravity;
+    [SerializeField] private float attackedEnemy;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;   
-
+    
     //REFERENCES
     private CharacterController controller;
     private Animator anim;
@@ -26,9 +30,35 @@ public class PlayerMovement : MonoBehaviour
 
     void OnControllerColliderHit (ControllerColliderHit hit) 
     {
+        
         hitNormal = hit.normal;
         hitPoint = hit.point;
+        if(hit.collider.name == "Enemy" && animationName=="Hurricane Kick")
+        {
+            
+        
+            Vector3 flyDir = new Vector3(transform.position.x + (transform.forward.x * 400)  , 0, transform.position.z + (transform.forward.z * 400)  );
+            Debug.Log(transform.forward);
+            Debug.Log(flyDir);
+            Debug.Log(transform.position);
+            hit.gameObject.SendMessage("Die",flyDir);
+        }
+       else if(hit.collider.name == "Enemy" )
+       {
+            
+            Debug.Log("Trace 1 zycie");
+            GetComponent<Health>().Damage();
+            Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
+            pushDir = pushDir.normalized;
+            Knocback(pushDir);  
+                     
+
+            
+
+       }
+            
     }
+
 
     private void Start()
     {
@@ -44,22 +74,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {   
+        
         animationName= anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         float moveZ = 0;        
-        if(isNotSliding)
+        if(isNotSliding && knocbackCounter <= 0)
         {
             moveZ = Input.GetAxis("Vertical");
-        }               
-        moveDirection = new Vector3(0, 0, moveZ);
-        moveDirection = transform.TransformDirection(moveDirection);
+        }
+                      
+       
 
-        if ( controller.isGrounded && _velocity.y < 0 ) 
+        if ( controller.isGrounded && _velocity.y < 0  && knocbackCounter <= 0) 
         {
             _velocity.y = -2f;
         }
         
-        if(controller.isGrounded && isNotSliding)
+        if(controller.isGrounded && isNotSliding && knocbackCounter <= 0)
         {   
+         moveDirection = new Vector3(0, 0, moveZ);
+         moveDirection = transform.TransformDirection(moveDirection);
             if(Input.GetAxis ("Vertical") < 0)
          {
             Backwards();
@@ -77,10 +110,6 @@ public class PlayerMovement : MonoBehaviour
          {
              Jump();
          }
-         if(Input.GetKeyDown(KeyCode.F))
-         {
-             Attack();
-         }
         }
          if(animationName=="Hurricane Kick" )
          {
@@ -97,7 +126,10 @@ public class PlayerMovement : MonoBehaviour
          {
              Attack();
          }
-        
+         if (knocbackCounter > 0) 
+         {
+             knocbackCounter -= Time.deltaTime;
+         }
 
                   
 
@@ -141,5 +173,19 @@ public class PlayerMovement : MonoBehaviour
     private void Attack()
     {
         anim.Play("Hurricane Kick", 0, 0.25f);
+    }
+    public void Knocback(Vector3 direction)
+    {
+        knocbackCounter = knocbackTime;
+
+        moveDirection = direction * knockbackForce ;
+        moveDirection.y = knockbackForce;
+
+    }
+    IEnumerator Wait(float duration)
+    {
+        
+    yield return new WaitForSeconds(duration);   //Wait
+        
     }
 }
