@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:JungleJoy2/Assets/Collectable.meta
 guid: faf720bb325b53547befb78d543852bd
+=======
+guid: 6b9c511f6eb8fcd45bd6868a72260c80
+>>>>>>> origin/combat:JungleJoy2/Assets/New Movement test.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -6,16 +6,15 @@ using UnityEngine.AI;
 public class SpiderAI : MonoBehaviour
 {
 
-    public enum WanderType { Random, Waypoint };
+    public enum WanderType { Random, Waypoint, Death };
     public WanderType wanderType = WanderType.Random;
     public int health = 100;
     public int wanderDistance = 10;
     private Vector3 wanderPoint;
-    private bool isDeadDestenationSeted = false;
     public Transform[] waypoints;
     private int wayPointIndex = 0;
     public float wanderSpeed = 0.5f;
-    public float chaseSpeed = 1f;
+    public float chaseSpeed = 0.6f;
 
     public float viewDistance = 5f;
     private bool isAware = false;
@@ -28,6 +27,7 @@ public class SpiderAI : MonoBehaviour
     public GameObject player;
     private Animator animator;
 
+
     public void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -38,46 +38,41 @@ public class SpiderAI : MonoBehaviour
 
     public void Update()
     {
-        if(health <= 0)
-        {
-            if(!isDeadDestenationSeted)
+
+       
+
+            if (isAware)
             {
-            animator.SetBool("Dead", true);
-            isDeadDestenationSeted = true;
+                agent.speed = chaseSpeed;
+                animator.SetBool("Aware", true);
+                agent.SetDestination(player.transform.position);
+                if(isAware && isDetecting)
+                {
+                    detectingPosition = transform.position;
+                    isDetecting = false;
+                }
+                if(Vector3.Distance(detectingPosition, transform.position) < detectingDistance)
+                {
+                    offAware();
+                    isDetecting = true;
+                }
             }
             else
             {
+                agent.speed = wanderSpeed;
+                animator.SetBool("Aware", false);
+                Wander();
+                
             }
-        }
-        else if (isAware)
-        {
-            agent.speed = chaseSpeed;
-            animator.SetBool("Aware", true);
-            agent.SetDestination(player.transform.position);
-            if(isAware && isDetecting)
-            {
-                detectingPosition = transform.position;
-                isDetecting = false;
-            }
-            if(Vector3.Distance(detectingPosition, transform.position) < detectingDistance)
-            {
-                offAware();
-                isDetecting = true;
-            }
-        }
-        else
-        {
-            agent.speed = wanderSpeed;
-            animator.SetBool("Aware", false);
-            Wander();
+            SearchForPlayer();
             
         }
-        SearchForPlayer();
-    }
+        
+    
 
     public void SearchForPlayer()
     {
-        if(Vector3.Distance(player.transform.position, transform.position) < viewDistance)
+        if(Vector3.Distance(player.transform.position, transform.position) < viewDistance && wanderType!=WanderType.Death)
         {
             onAware();
         }
@@ -107,7 +102,7 @@ public class SpiderAI : MonoBehaviour
                 agent.SetDestination(wanderPoint);
             }
         }
-        else 
+        else if(wanderType == WanderType.Waypoint)
         {
             if (waypoints.Length >= 2)
             {
@@ -132,15 +127,25 @@ public class SpiderAI : MonoBehaviour
                 Debug.LogWarning("Please assing more than 1 waypoint to the AI:" + gameObject.name);
             }
         }
-    }
-
-    public void onHit(int damage)
-    {
-        health -= damage;
-    }
+  
+    } 
 
     public Vector3 getWanderPoint(int wanderDistance)
     {
         return new Vector3(transform.position.x + wanderDistance, transform.position.y, transform.position.z);
     }
+    private IEnumerator  Die(Vector3 pushDir)
+    {
+        offAware();
+        wanderType = WanderType.Death;       
+        agent.SetDestination(pushDir);
+        wanderSpeed = 200f;
+        agent.acceleration = 200f;       
+        
+        
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
+
+    }
+
 }
