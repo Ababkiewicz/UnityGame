@@ -35,9 +35,20 @@ public class PlayerMovement : MonoBehaviour
 
     void OnControllerColliderHit (ControllerColliderHit hit) 
     {
+
         
         hitNormal = hit.normal;
         hitPoint = hit.point;
+        if(hit.gameObject.tag.Equals("Enemy") )
+        {
+                
+            Debug.Log("Trace 1 zycie");
+            GetComponent<Health>().Damage();
+            Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
+            pushDir = pushDir.normalized;
+            Knocback(pushDir);            
+
+        }
         if (hit.gameObject.tag.Equals("Coin"))
         {
             sounds.PlayOneShot(coinSound);
@@ -50,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             hit.gameObject.SendMessage("destroy");
             points = points + 10;
         }
-        if(hit.collider.name == "Enemy" && animationName=="Hurricane Kick")
+        if(hit.gameObject.tag.Equals("Enemy") && animationName=="Hurricane Kick")
         {
             
         
@@ -60,19 +71,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log(transform.position);
             hit.gameObject.SendMessage("Die",flyDir);
         }
-       else if(hit.collider.name == "Enemy" )
-       {
-            
-            Debug.Log("Trace 1 zycie");
-            GetComponent<Health>().Damage();
-            Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
-            pushDir = pushDir.normalized;
-            Knocback(pushDir);  
-                     
 
-            
-
-       }
+   
             
     }
 
