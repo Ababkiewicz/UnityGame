@@ -67,8 +67,8 @@ public class SpiderAI : MonoBehaviour
             SearchForPlayer();
             
         }
-        
-    
+
+
 
     public void SearchForPlayer()
     {
@@ -136,6 +136,7 @@ public class SpiderAI : MonoBehaviour
     }
     private IEnumerator  Die(Vector3 pushDir)
     {
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         offAware();
         wanderType = WanderType.Death;       
         agent.SetDestination(pushDir);

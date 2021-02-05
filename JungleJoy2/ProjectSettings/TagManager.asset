@@ -7,6 +7,7 @@ TagManager:
   - Coin
   - Pearl
   - Enemy
+  - Terrain
   layers:
   - Default
   - TransparentFX
