@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/mainMenu.unity
+    guid: eeb9e831e6720f9468c7e733c60b8f4d
+  - enabled: 1
+    path: Assets/Scenes/JJ2 level testing.unity
+    guid: a357d63d98d41f047a2b57a8d5741ed0
   m_configObjects: {}

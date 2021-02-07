@@ -8,7 +8,6 @@ public class SpiderAI : MonoBehaviour
 
     public enum WanderType { Random, Waypoint, Death };
     public WanderType wanderType = WanderType.Random;
-    public int health = 100;
     public int wanderDistance = 10;
     private Vector3 wanderPoint;
     public Transform[] waypoints;
@@ -27,6 +26,8 @@ public class SpiderAI : MonoBehaviour
     public GameObject player;
     private Animator animator;
 
+    private AudioSource sounds;
+    [SerializeField] public AudioClip spiderDeath;
 
     public void Start()
     {
@@ -34,13 +35,14 @@ public class SpiderAI : MonoBehaviour
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
         wanderPoint = getWanderPoint(wanderDistance);
+        sounds = GetComponent<AudioSource>();
     }
 
     public void Update()
     {
 
        
-
+        
             if (isAware)
             {
                 agent.speed = chaseSpeed;
@@ -72,7 +74,7 @@ public class SpiderAI : MonoBehaviour
 
     public void SearchForPlayer()
     {
-        if(Vector3.Distance(player.transform.position, transform.position) < viewDistance && wanderType!=WanderType.Death)
+        if(Vector3.Distance(player.transform.position, transform.position) < viewDistance && wanderType!=WanderType.Death && player.GetComponent<Health>().numOfHearts > 0)
         {
             onAware();
         }
@@ -134,17 +136,19 @@ public class SpiderAI : MonoBehaviour
     {
         return new Vector3(transform.position.x + wanderDistance, transform.position.y, transform.position.z);
     }
+
     private IEnumerator  Die(Vector3 pushDir)
     {
+        GetComponent<CapsuleCollider>().enabled = false;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         offAware();
         wanderType = WanderType.Death;       
         agent.SetDestination(pushDir);
-        wanderSpeed = 200f;
-        agent.acceleration = 200f;       
-        
-        
-        yield return new WaitForSeconds(2);
+        wanderSpeed = 300f;
+        agent.acceleration = 300f;
+
+        sounds.PlayOneShot(spiderDeath);
+        yield return new WaitForSeconds(1);
         Destroy(gameObject);
 
     }

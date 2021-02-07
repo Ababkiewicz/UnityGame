@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource sounds;
     [SerializeField] public AudioClip coinSound;
     [SerializeField] public AudioClip pearlSound;
+    [SerializeField] public AudioClip characterHit;
+    [SerializeField] public AudioClip characterDeath;
+    [SerializeField] public AudioClip characterSpin;
+    [SerializeField] public AudioClip characterJump;
 
     [SerializeField] private bool isNotSliding; // is on a slope or not
     public float slideFriction = 0.5f; // ajusting the friction of the slope
@@ -22,12 +26,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 hitNormal; //orientation of the slope.
     private Vector3 hitPoint; //orientation of the slope.
     public string hitTarget;
+    public GameObject prevTarget;
 
     [SerializeField] private float gravity;
     [SerializeField] private float attackedEnemy;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;
 
+    public GameOver gameOver;   
     //REFERENCES
     private CharacterController controller;
     private Animator anim;
@@ -40,25 +46,25 @@ public class PlayerMovement : MonoBehaviour
         hitNormal = hit.normal;
         hitPoint = hit.point;
         hitTarget = hit.gameObject.tag;
-        if (hitTarget.Equals("Enemy") && animationName == "Hurricane Kick")
+
+        if (hitTarget.Equals("Enemy") && animationName == "Hurricane Kick" )
         {
 
 
             Vector3 flyDir = new Vector3(transform.position.x + (transform.forward.x * 400), 0, transform.position.z + (transform.forward.z * 400));
-            Debug.Log(transform.forward);
-            Debug.Log(flyDir);
-            Debug.Log(transform.position);
             hit.gameObject.SendMessage("Die", flyDir);
+            
+            
         }
-        else if (hitTarget.Equals("Enemy"))
+        else if (hitTarget.Equals("Enemy") && hit.gameObject != prevTarget)
         {
-
-            Debug.Log("Trace 1 zycie");
+            
             Damage();
             Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
             pushDir = pushDir.normalized;
-            Knocback(pushDir);
-
+            Knocback(pushDir);            
+            
+            
         }
         
         if (hitTarget.Equals("Coin"))
@@ -76,20 +82,28 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
+        prevTarget = hit.gameObject;
     }
-
+    
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         sounds = GetComponent<AudioSource>();
+        
     }
 
     private void Update()
     {
-        Move();
+        if (GetComponent<Health>().numOfHearts <= 0)
+        {
+            GameOver();
+        }
+        else
+        {
+            Move();
+        }
     }
 
     private void Move()
@@ -180,11 +194,11 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("directionY", Mathf.Abs(_velocity.y), 0.1f, Time.deltaTime);
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetBool("isNotSliding", isNotSliding);
+        anim.SetInteger("life", GetComponent<Health>().numOfHearts);
 
 
 
 
-        
     }
     private void Idle()
     {
@@ -196,11 +210,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
+        sounds.PlayOneShot(characterJump);
         _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
 
     }
     private void Attack()
     {
+        sounds.PlayOneShot(characterSpin);
         anim.Play("Hurricane Kick", 0, 0.25f);
     }
 
@@ -213,18 +229,36 @@ public class PlayerMovement : MonoBehaviour
         knocbackCounter = knocbackTime;
 
         moveDirection = direction * knockbackForce;
-        moveDirection.y = knockbackForce;
+        moveDirection.y = knockbackForce*0.5f;
 
     }
     public void Damage()
     {
-        GetComponent<Health>().Damage();
+        if (GetComponent<Health>().numOfHearts > 1)
+        {
+            GetComponent<Health>().Damage();
+            sounds.PlayOneShot(characterHit);
+        }
+        else
+        {
+            GetComponent<Health>().Damage();
+            sounds.PlayOneShot(characterDeath);
 
+        } 
+            
     }
     IEnumerator Wait(float duration)
     {
-
+        
         yield return new WaitForSeconds(duration);   //Wait
 
+    }
+
+    public void GameOver()
+    {
+        //transform.DetachChildren();        
+        //Destroy(gameObject);               
+        GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
+        gameOver.Setup(points);
     }
 }
