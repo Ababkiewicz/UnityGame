@@ -21,7 +21,7 @@ public class SpiderAI : MonoBehaviour
     private float detectingDistance = 7f;
     private Vector3 detectingPosition;
 
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     private Renderer renderer;
     public GameObject player;
     private Animator animator;
@@ -40,9 +40,6 @@ public class SpiderAI : MonoBehaviour
 
     public void Update()
     {
-
-       
-        
             if (isAware)
             {
                 agent.speed = chaseSpeed;
@@ -150,7 +147,6 @@ public class SpiderAI : MonoBehaviour
         sounds.PlayOneShot(spiderDeath);
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
-
     }
 
 }

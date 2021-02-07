@@ -8,6 +8,7 @@ TagManager:
   - Pearl
   - Enemy
   - Terrain
+  - Water
   layers:
   - Default
   - TransparentFX
