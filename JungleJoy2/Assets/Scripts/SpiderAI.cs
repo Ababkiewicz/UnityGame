@@ -22,7 +22,7 @@ public class SpiderAI : MonoBehaviour
     private float detectingDistance = 7f;
     private Vector3 detectingPosition;
 
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     private Renderer renderer;
     public GameObject player;
     private Animator animator;
@@ -38,9 +38,6 @@ public class SpiderAI : MonoBehaviour
 
     public void Update()
     {
-
-       
-
             if (isAware)
             {
                 agent.speed = chaseSpeed;
@@ -134,7 +131,7 @@ public class SpiderAI : MonoBehaviour
     {
         return new Vector3(transform.position.x + wanderDistance, transform.position.y, transform.position.z);
     }
-    private IEnumerator  Die(Vector3 pushDir)
+    private IEnumerator Die(Vector3 pushDir)
     {
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         offAware();
@@ -142,11 +139,8 @@ public class SpiderAI : MonoBehaviour
         agent.SetDestination(pushDir);
         wanderSpeed = 200f;
         agent.acceleration = 200f;       
-        
-        
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
-
     }
 
 }

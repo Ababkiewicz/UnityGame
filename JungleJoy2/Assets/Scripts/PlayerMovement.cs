@@ -42,8 +42,6 @@ public class PlayerMovement : MonoBehaviour
         hitTarget = hit.gameObject.tag;
         if (hitTarget.Equals("Enemy") && animationName == "Hurricane Kick")
         {
-
-
             Vector3 flyDir = new Vector3(transform.position.x + (transform.forward.x * 400), 0, transform.position.z + (transform.forward.z * 400));
             Debug.Log(transform.forward);
             Debug.Log(flyDir);
@@ -73,10 +71,12 @@ public class PlayerMovement : MonoBehaviour
             hit.gameObject.SendMessage("destroy");
             points = points + 10;
         }
-
-
-
-
+        if (hitTarget.Equals("Water"))
+        {
+            Damage();
+            Damage();
+            Damage();
+        }
     }
 
 
