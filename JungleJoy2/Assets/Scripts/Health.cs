@@ -9,7 +9,7 @@ public class Health : MonoBehaviour
     public Sprite heart;
 
 
-    // Update is called once per frame
+    
     void Update()
     {
         for (int i=0; i  < hearts.Length; i++){         

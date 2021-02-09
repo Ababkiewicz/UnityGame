@@ -13,16 +13,17 @@ public class GameEngine : MonoBehaviour
     public float knocbackTime;
     private float knocbackCounter;
     private Vector3 hitNormal; 
-    private Vector3 hitPoint; 
-    public string hitTarget;
-    public float velocityY;
-    public int phase;
+    private Vector3 hitPoint;
+    private string hitTarget;
+    private float velocityY;
+    private int phase;
     public GameObject prevTarget;
     [SerializeField] private float gravity;
     [SerializeField] private float attackedEnemy;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;
     public bool completed = false;
+    private GUIStyle guiStyle;
 
     //SOUNDS
     public AudioSource sounds;
@@ -80,9 +81,14 @@ public class GameEngine : MonoBehaviour
         }
         if (hitTarget.Equals("Diamond"))
         {
-            sounds.PlayOneShot(coinSound);
+            GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
+            gameOver.SetupFinished(points);
+            completed = true;
+            music.clip = musicFinish;
+            music.Play(0);
+            anim.SetTrigger("finished");
+            GameObject.Find("Main Camera").transform.parent = null;
             hit.gameObject.SendMessage("destroy");
-            GameOver();
         }
         if (hitTarget.Equals("Pearl"))
         {
@@ -100,17 +106,7 @@ public class GameEngine : MonoBehaviour
             Damage();
             Damage();
         }
-        if (hitTarget.Equals("Pearl") && phase == 3)
-        {
-            GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
-            gameOver.SetupFinished(points);
-            completed = true;
-            music.clip = musicFinish;
-            music.Play(0);
-            anim.SetTrigger("finished");
-            GameObject.Find("Main Camera").transform.parent = null;
-            
-        }
+
         
             prevTarget = hit.gameObject;
     }
@@ -123,6 +119,7 @@ public class GameEngine : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         sounds = GetComponent<AudioSource>();
         music = GameObject.Find("WallTransition").GetComponentInChildren<AudioSource>();
+        guiStyle = new GUIStyle();
         transitionAnim.SetTrigger("start");
         transitionAnim.SetTrigger("spiders");
         phase = 1;
@@ -265,7 +262,9 @@ public class GameEngine : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), "Score : " + points);
+        guiStyle.fontSize = 30;
+        guiStyle.normal.textColor = Color.white;
+        GUI.Label(new Rect(10, 10, 100, 200), "Score : " + points, guiStyle);
     }
     public void Knocback(Vector3 direction)
     {
