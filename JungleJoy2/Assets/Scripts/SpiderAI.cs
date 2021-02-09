@@ -19,6 +19,7 @@ public class SpiderAI : MonoBehaviour
     private bool isAware = false;
     private bool isDetecting = true;
     private float detectingDistance = 7f;
+    private Vector3 pushDir;
     private Vector3 detectingPosition;
 
     public NavMeshAgent agent;
@@ -58,8 +59,7 @@ public class SpiderAI : MonoBehaviour
             }
             else
             {
-                agent.speed = wanderSpeed;
-                animator.SetBool("Aware", false);
+                agent.speed = wanderSpeed;                
                 Wander();
                 
             }
@@ -126,6 +126,12 @@ public class SpiderAI : MonoBehaviour
                 Debug.LogWarning("Please assing more than 1 waypoint to the AI:" + gameObject.name);
             }
         }
+        else
+        {
+            transform.position += pushDir * 40f *  Time.deltaTime ;
+            transform.Rotate(0, 10, 0);
+            
+        }
   
     } 
 
@@ -136,16 +142,13 @@ public class SpiderAI : MonoBehaviour
 
     private IEnumerator  Die(Vector3 pushDir)
     {
-        GetComponent<CapsuleCollider>().enabled = false;
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+        GetComponent<CapsuleCollider>().enabled = false; 
         offAware();
-        wanderType = WanderType.Death;       
-        agent.SetDestination(pushDir);
-        wanderSpeed = 300f;
-        agent.acceleration = 300f;
-
+        wanderType = WanderType.Death;      
+        agent.enabled = false;
+        this.pushDir = pushDir;
         sounds.PlayOneShot(spiderDeath);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 

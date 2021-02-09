@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public AudioClip characterDeath;
     [SerializeField] public AudioClip characterSpin;
     [SerializeField] public AudioClip characterJump;
+    [SerializeField] public AudioClip musicForest;
+    [SerializeField] public AudioClip musicGoblin;
+    [SerializeField] public AudioClip musicStronghold;
+    public AudioSource music;
 
     [SerializeField] private bool isNotSliding; // is on a slope or not
     public float slideFriction = 0.5f; // ajusting the friction of the slope
@@ -33,10 +37,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;
 
-    public GameOver gameOver;   
+    public GameOver gameOver;
+    private int phase;
     //REFERENCES
     private CharacterController controller;
     private Animator anim;
+    private Animator transitionAnim;
 
 
     void OnControllerColliderHit(ControllerColliderHit hit) 
@@ -49,7 +55,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (hitTarget.Equals("Enemy") && animationName == "Hurricane Kick" )
         {
-            Vector3 flyDir = new Vector3(transform.position.x + (transform.forward.x * 400), 0, transform.position.z + (transform.forward.z * 400));
+            Vector3 flyDir = new Vector3(transform.forward.x , 0.2f, transform.forward.z);
+            //Vector3 flyDir = hit.transform.position-transform.position;
+            flyDir = flyDir.normalized;
             hit.gameObject.SendMessage("Die", flyDir);
             
             
@@ -60,9 +68,11 @@ public class PlayerMovement : MonoBehaviour
             Damage();
             Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
             pushDir = pushDir.normalized;
-            Knocback(pushDir);            
+            Knocback(pushDir);
             
-            
+
+
+
         }
         
         if (hitTarget.Equals("Coin"))
@@ -89,10 +99,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        transitionAnim = GameObject.Find("WallTransition").GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         sounds = GetComponent<AudioSource>();
-        
+        music = GameObject.Find("WallTransition").GetComponentInChildren<AudioSource>();
+        transitionAnim.SetTrigger("start");
+        transitionAnim.SetTrigger("spiders");
+        phase = 1;
+
     }
 
     private void Update()
@@ -109,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-
+        Phase();
         animationName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         float moveZ = 0;
         if (hitTarget == "Terrain")
@@ -192,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //controller.Move(_velocity * Time.deltaTime);
-        anim.SetFloat("directionY", Mathf.Abs(_velocity.y), 0.1f, Time.deltaTime);
+        anim.SetFloat("directionY", Mathf.Abs(_velocity.y));
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetBool("isNotSliding", isNotSliding);
         anim.SetInteger("life", GetComponent<Health>().numOfHearts);
@@ -248,12 +263,6 @@ public class PlayerMovement : MonoBehaviour
         } 
             
     }
-    IEnumerator Wait(float duration)
-    {
-        
-        yield return new WaitForSeconds(duration);   //Wait
-
-    }
 
     public void GameOver()
     {
@@ -262,4 +271,38 @@ public class PlayerMovement : MonoBehaviour
         GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
         gameOver.Setup(points);
     }
+    public void Phase()
+    {
+        if(transform.position.z >= 185 && transform.position.z <= 186 && phase == 1)
+        {
+            transitionAnim.SetTrigger("goblins");
+            music.clip = musicGoblin;
+            music.Play();
+            phase = 2;
+        }
+        else if(transform.position.z >= 369 && transform.position.z <= 370 && phase == 2)
+        {
+            transitionAnim.SetTrigger("castle");
+            music.clip=musicStronghold;
+            music.Play(0);
+            phase = 3;
+        }
+        else if(transform.position.z >= 183 && transform.position.z <= 184 && phase == 2)
+        {
+            transitionAnim.SetTrigger("spiders");
+            music.clip = musicForest;
+            music.Play(0);
+            phase = 1;
+        }
+        else if (transform.position.z >= 367 && transform.position.z <= 368 && phase == 3)
+        {
+            transitionAnim.SetTrigger("goblins");
+            music.clip = musicGoblin;
+            music.Play();
+            phase = 2;
+        }
+
+    }
+
+
 }
