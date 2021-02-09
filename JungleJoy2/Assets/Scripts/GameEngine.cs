@@ -16,12 +16,13 @@ public class GameEngine : MonoBehaviour
     private Vector3 hitPoint; 
     public string hitTarget;
     public float velocityY;
-    private int phase;
+    public int phase;
     public GameObject prevTarget;
     [SerializeField] private float gravity;
     [SerializeField] private float attackedEnemy;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;
+    public bool completed = false;
 
     //SOUNDS
     public AudioSource sounds;
@@ -34,6 +35,7 @@ public class GameEngine : MonoBehaviour
     [SerializeField] private AudioClip musicForest;
     [SerializeField] private AudioClip musicGoblin;
     [SerializeField] private AudioClip musicStronghold;
+    [SerializeField] private AudioClip musicFinish;
     public AudioSource music;
 
 
@@ -92,7 +94,19 @@ public class GameEngine : MonoBehaviour
             Damage();
             Damage();
         }
-        prevTarget = hit.gameObject;
+        if (hitTarget.Equals("Pearl") && phase == 3)
+        {
+            GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
+            gameOver.SetupFinished(points);
+            completed = true;
+            music.clip = musicFinish;
+            music.Play(0);
+            anim.SetTrigger("finished");
+            GameObject.Find("Main Camera").transform.parent = null;
+            
+        }
+        
+            prevTarget = hit.gameObject;
     }
     
 
@@ -115,9 +129,16 @@ public class GameEngine : MonoBehaviour
         {
             GameOver();
         }
-        else
+        else if (!completed)
         {
             Move();
+        }
+        else
+        {           
+            
+         transform.Rotate(0, 0.5f, 0);
+              
+            
         }
     }
 
@@ -145,7 +166,7 @@ public class GameEngine : MonoBehaviour
 
         if (controller.isGrounded && _velocity.y < 0 && knocbackCounter <= 0)
         {
-            _velocity.y = -0.5f;
+            _velocity.y = -2f;
         }
 
         if (controller.isGrounded && isNotSliding && knocbackCounter <= 0)
@@ -268,7 +289,7 @@ public class GameEngine : MonoBehaviour
     {
                     
         GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
-        gameOver.Setup(points);
+        gameOver.SetupGameOver(points);
     }
     public void Phase()
     {
