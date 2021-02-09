@@ -15,6 +15,7 @@ public class GameEngine : MonoBehaviour
     private Vector3 hitNormal; 
     private Vector3 hitPoint; 
     public string hitTarget;
+    public float velocityY;
     private int phase;
     public GameObject prevTarget;
     [SerializeField] private float gravity;
@@ -125,11 +126,9 @@ public class GameEngine : MonoBehaviour
         Phase();
         animationName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         float moveZ = 0;
-        if (hitTarget == "Terrain")
-        {
-            isNotSliding = Vector3.Angle(Vector3.up, hitNormal) <= controller.slopeLimit;
-        }
-        else
+       
+       isNotSliding = Vector3.Angle(Vector3.up, hitNormal) <= controller.slopeLimit;
+        
         {
             isNotSliding = true;
         }
@@ -170,12 +169,12 @@ public class GameEngine : MonoBehaviour
         }
         if (animationName == "Hurricane Kick")
         {
-            controller.radius = 2.1f;
+            controller.radius = 1.9f;
             controller.center = new Vector3(0, 2.1f, 0);
         }
         else
         {
-            controller.radius = 0.6f;
+            controller.radius = 0.4f;
             controller.center = new Vector3(0, 1.69f, 0);
         }
 
@@ -201,7 +200,7 @@ public class GameEngine : MonoBehaviour
         }
 
         controller.Move(moveDirection * Time.deltaTime * moveSpeed + (_velocity * Time.deltaTime));
-
+        velocityY = controller.velocity.y;
 
 
         
