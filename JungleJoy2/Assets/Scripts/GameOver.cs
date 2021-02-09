@@ -41,7 +41,7 @@ public void RestartButton()
         gameObject.GetComponent<Canvas>().enabled = false;
         transitionAnim.SetTrigger("end");        
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene("level1");
+        SceneManager.LoadScene("FirstLevel");
     }
 
 
