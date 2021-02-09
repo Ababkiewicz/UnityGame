@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpiderAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
 
     public enum WanderType { Random, Waypoint, Death };
@@ -23,18 +22,14 @@ public class SpiderAI : MonoBehaviour
     private Vector3 detectingPosition;
 
     public NavMeshAgent agent;
-    private Renderer renderer;
     public GameObject player;
-    private Animator animator;
 
     private AudioSource sounds;
-    [SerializeField] public AudioClip spiderDeath;
+    [SerializeField] public AudioClip deathSound;
 
     public void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        renderer = GetComponent<Renderer>();
-        animator = GetComponentInChildren<Animator>();
+        agent = GetComponent<NavMeshAgent>(); 
         wanderPoint = getWanderPoint(wanderDistance);
         sounds = GetComponent<AudioSource>();
     }
@@ -43,8 +38,7 @@ public class SpiderAI : MonoBehaviour
     {
             if (isAware)
             {
-                agent.speed = chaseSpeed;
-                animator.SetBool("Aware", true);
+                agent.speed = chaseSpeed;                
                 agent.SetDestination(player.transform.position);
                 if(isAware && isDetecting)
                 {
@@ -147,7 +141,7 @@ public class SpiderAI : MonoBehaviour
         wanderType = WanderType.Death;      
         agent.enabled = false;
         this.pushDir = pushDir;
-        sounds.PlayOneShot(spiderDeath);
+        sounds.PlayOneShot(deathSound);
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }

@@ -103,14 +103,12 @@
     <Compile Include="Assets\Assets\Trees1\Render Pipeline Support\Built-in RP\CTI Runtime Components\Scripts\CTI_Utils.cs" />
     <Compile Include="Assets\Assets\Water\Water (Basic)\Scripts\WaterBasic.cs" />
     <Compile Include="Assets\Collectable\CollectableScript.cs" />
-    <Compile Include="Assets\Enemies\Spider\FSP_ContinuousRotation.cs" />
-    <Compile Include="Assets\Scripts\BlockScript.cs" />
     <Compile Include="Assets\Scripts\CameraControllerNew.cs" />
+    <Compile Include="Assets\Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\GameEngine.cs" />
     <Compile Include="Assets\Scripts\GameOver.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\SpiderAI.cs" />
     <None Include="Assets\Assets\Trees\Render Pipeline Support\Built-in RP\CTI Runtime Components\Shaders\CTI_LOD_Bark_Array_301.shader" />
     <None Include="Assets\Samples\Terrain Tools\0.1.0-preview\Terrain Assets\ThirdPartyNotices.txt" />
     <None Include="Assets\Assets\Text\Shaders\TMPro.cginc" />

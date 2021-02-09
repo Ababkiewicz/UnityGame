@@ -1,49 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class GameEngine : MonoBehaviour
 {
     //VARIABLES
     [SerializeField] private float moveSpeed;
     private Vector3 moveDirection;
     public string animationName;
     public int points = 0;
-
-    public AudioSource sounds;
-    [SerializeField] public AudioClip coinSound;
-    [SerializeField] public AudioClip pearlSound;
-    [SerializeField] public AudioClip characterHit;
-    [SerializeField] public AudioClip characterDeath;
-    [SerializeField] public AudioClip characterSpin;
-    [SerializeField] public AudioClip characterJump;
-    [SerializeField] public AudioClip musicForest;
-    [SerializeField] public AudioClip musicGoblin;
-    [SerializeField] public AudioClip musicStronghold;
-    public AudioSource music;
-
-    [SerializeField] private bool isNotSliding; // is on a slope or not
-    public float slideFriction = 0.5f; // ajusting the friction of the slope
+    [SerializeField] private bool isNotSliding; 
+    public float slideFriction = 0.5f; 
     public float knockbackForce;
     public float knocbackTime;
     private float knocbackCounter;
-    private Vector3 hitNormal; //orientation of the slope.
-    private Vector3 hitPoint; //orientation of the slope.
+    private Vector3 hitNormal; 
+    private Vector3 hitPoint; 
     public string hitTarget;
+    private int phase;
     public GameObject prevTarget;
-
     [SerializeField] private float gravity;
     [SerializeField] private float attackedEnemy;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private float jumpHeight;
 
-    public GameOver gameOver;
-    private int phase;
+    //SOUNDS
+    public AudioSource sounds;
+    [SerializeField] private AudioClip coinSound;
+    [SerializeField] private AudioClip pearlSound;
+    [SerializeField] private AudioClip characterHit;
+    [SerializeField] private AudioClip characterDeath;
+    [SerializeField] private AudioClip characterSpin;
+    [SerializeField] private AudioClip characterJump;
+    [SerializeField] private AudioClip musicForest;
+    [SerializeField] private AudioClip musicGoblin;
+    [SerializeField] private AudioClip musicStronghold;
+    public AudioSource music;
+
+
+
     //REFERENCES
+    [SerializeField] private GameOver gameOver;
     private CharacterController controller;
     private Animator anim;
     private Animator transitionAnim;
-
+    
 
     void OnControllerColliderHit(ControllerColliderHit hit) 
     {
@@ -55,8 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (hitTarget.Equals("Enemy") && animationName == "Hurricane Kick" )
         {
-            Vector3 flyDir = new Vector3(transform.forward.x , 0.2f, transform.forward.z);
-            //Vector3 flyDir = hit.transform.position-transform.position;
+            Vector3 flyDir = new Vector3(transform.forward.x , 0.2f, transform.forward.z);            
             flyDir = flyDir.normalized;
             hit.gameObject.SendMessage("Die", flyDir);
             
@@ -66,13 +64,9 @@ public class PlayerMovement : MonoBehaviour
         {
             
             Damage();
-            Vector3 pushDir = transform.position - hit.transform.position; // albo odwrotnie jak cos
+            Vector3 pushDir = transform.position - hit.transform.position; 
             pushDir = pushDir.normalized;
-            Knocback(pushDir);
-            
-
-
-
+            Knocback(pushDir);   
         }
         
         if (hitTarget.Equals("Coin"))
@@ -86,6 +80,10 @@ public class PlayerMovement : MonoBehaviour
             sounds.PlayOneShot(pearlSound);
             hit.gameObject.SendMessage("destroy");
             points = points + 10;
+            if (GetComponent<Health>().numOfHearts < 3)
+            {
+                GetComponent<Health>().numOfHearts += 1;
+            }
         }
         if (hitTarget.Equals("Water"))
         {
@@ -206,8 +204,8 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        //controller.Move(_velocity * Time.deltaTime);
-        anim.SetFloat("directionY", Mathf.Abs(_velocity.y));
+        
+        
         anim.SetBool("isGrounded", controller.isGrounded);
         anim.SetBool("isNotSliding", isNotSliding);
         anim.SetInteger("life", GetComponent<Health>().numOfHearts);
@@ -266,8 +264,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GameOver()
     {
-        //transform.DetachChildren();        
-        //Destroy(gameObject);               
+                    
         GameObject.Find("Main Camera").GetComponent<CameraControllerNew>().enabled = false;
         gameOver.Setup(points);
     }

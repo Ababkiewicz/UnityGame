@@ -3778,7 +3778,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
+  deathSound: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
 --- !u!195 &100011885
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8057,7 +8057,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
+  deathSound: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
 --- !u!195 &277383587
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8349,7 +8349,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
+  deathSound: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
 --- !u!195 &287777025
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8620,7 +8620,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &290608453
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10460,7 +10460,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!136 &358267510
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12030,7 +12030,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
+  deathSound: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
 --- !u!195 &428950337
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -17170,7 +17170,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &574556840
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -18713,7 +18713,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
+  deathSound: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
 --- !u!195 &630351835
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -32198,6 +32198,16 @@ MonoBehaviour:
   moveSpeed: 8
   animationName: 
   points: 0
+  isNotSliding: 0
+  slideFriction: 0.06
+  knockbackForce: 2
+  knocbackTime: 0.3
+  hitTarget: 
+  prevTarget: {fileID: 0}
+  gravity: -25
+  attackedEnemy: 0
+  _velocity: {x: 0, y: 0, z: 0}
+  jumpHeight: 1.7
   sounds: {fileID: 0}
   coinSound: {fileID: 8300000, guid: 5bf9de496f612974db5afa0c7349feed, type: 3}
   pearlSound: {fileID: 8300000, guid: 0f89d4f54fdc664438d628682e8b6273, type: 3}
@@ -32209,16 +32219,6 @@ MonoBehaviour:
   musicGoblin: {fileID: 8300000, guid: 485060936bb960347a624a728b9b3042, type: 3}
   musicStronghold: {fileID: 8300000, guid: 248c4c8dd90474b449ea3d166edf4954, type: 3}
   music: {fileID: 0}
-  isNotSliding: 0
-  slideFriction: 0.06
-  knockbackForce: 2
-  knocbackTime: 0.3
-  hitTarget: 
-  prevTarget: {fileID: 0}
-  gravity: -25
-  attackedEnemy: 0
-  _velocity: {x: 0, y: 0, z: 0}
-  jumpHeight: 1.7
   gameOver: {fileID: 547783070}
 --- !u!4 &1079795292
 Transform:
@@ -33088,7 +33088,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
+  deathSound: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
 --- !u!195 &1108331030
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -35411,7 +35411,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1162377838
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -37669,7 +37669,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1227768355
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -38467,7 +38467,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1253814685
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -41208,7 +41208,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1356118873
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -41795,7 +41795,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
+  deathSound: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
 --- !u!195 &1367337873
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -42892,7 +42892,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
+  deathSound: {fileID: 8300000, guid: 64bdd3650d7d7324194cb95916329c7e, type: 3}
 --- !u!195 &1414626260
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -60586,7 +60586,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1902288149
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -61332,7 +61332,7 @@ MonoBehaviour:
   viewDistance: 5
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
+  deathSound: {fileID: 8300000, guid: c5c4e680f76abf24c8af5c5e46238ca9, type: 3}
 --- !u!195 &1914949972
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -64669,7 +64669,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
+  deathSound: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
 --- !u!136 &2025806820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -67368,7 +67368,7 @@ MonoBehaviour:
   viewDistance: 10
   agent: {fileID: 0}
   player: {fileID: 1079795287}
-  spiderDeath: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
+  deathSound: {fileID: 8300000, guid: a7246dde286c0124aa1fe52e2d7b68c0, type: 3}
 --- !u!195 &2103805008
 NavMeshAgent:
   m_ObjectHideFlags: 0
