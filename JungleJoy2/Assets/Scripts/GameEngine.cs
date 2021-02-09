@@ -124,7 +124,10 @@ public class GameEngine : MonoBehaviour
     private void Move()
     {
         Phase();
-        animationName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        if (anim.GetCurrentAnimatorClipInfo(0).Length > 0 )
+        {
+            animationName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        }
         float moveZ = 0;
        
        isNotSliding = Vector3.Angle(Vector3.up, hitNormal) <= controller.slopeLimit;
@@ -142,7 +145,7 @@ public class GameEngine : MonoBehaviour
 
         if (controller.isGrounded && _velocity.y < 0 && knocbackCounter <= 0)
         {
-            _velocity.y = -2f;
+            _velocity.y = -0.5f;
         }
 
         if (controller.isGrounded && isNotSliding && knocbackCounter <= 0)
@@ -170,12 +173,12 @@ public class GameEngine : MonoBehaviour
         if (animationName == "Hurricane Kick")
         {
             controller.radius = 1.9f;
-            controller.center = new Vector3(0, 2.1f, 0);
+            controller.center = new Vector3(0, 1.9f, 0);
         }
         else
         {
             controller.radius = 0.4f;
-            controller.center = new Vector3(0, 1.69f, 0);
+            controller.center = new Vector3(0, 1.70f, 0);
         }
 
         if (Input.GetKeyDown(KeyCode.R) && animationName != "Hurricane Kick")
