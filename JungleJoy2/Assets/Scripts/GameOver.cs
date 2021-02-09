@@ -6,22 +6,43 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public Text pointText;
-public void Setup(int score)
+    private Animator transitionAnim;
+    public static string previousLevel;
+
+
+    public void Setup(int score)
     {
         gameObject.SetActive(true);
         pointText.text = score.ToString() + " Points";
+        transitionAnim = GameObject.Find("WallTransition").GetComponentInChildren<Animator>();
 
     }
 public void RestartButton()
     {
-        SceneManager.LoadScene("level1");
+        StartCoroutine(Restart());
     }
     public void MenuButton()
     {
-        SceneManager.LoadScene("mainMenu");
+        StartCoroutine(Menu());
     }
     public void ExitButton()
     {
         Application.Quit();
     }
+    IEnumerator Menu()
+    {
+        gameObject.GetComponent<Canvas>().enabled = false;
+        transitionAnim.SetTrigger("end");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("mainMenu");
+    }
+    IEnumerator Restart()
+    {
+        gameObject.GetComponent<Canvas>().enabled = false;
+        transitionAnim.SetTrigger("end");        
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("level1");
+    }
+
+
 }
