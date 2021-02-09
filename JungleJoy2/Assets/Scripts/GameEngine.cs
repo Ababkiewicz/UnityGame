@@ -76,6 +76,12 @@ public class GameEngine : MonoBehaviour
             hit.gameObject.SendMessage("destroy");
             points++;
         }
+        if (hitTarget.Equals("Diamond"))
+        {
+            sounds.PlayOneShot(coinSound);
+            hit.gameObject.SendMessage("destroy");
+            GameOver();
+        }
         if (hitTarget.Equals("Pearl"))
         {
             sounds.PlayOneShot(pearlSound);

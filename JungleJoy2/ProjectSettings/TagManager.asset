@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Terrain
   - Water
+  - Diamond
   layers:
   - Default
   - TransparentFX
