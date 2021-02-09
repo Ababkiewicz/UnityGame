@@ -6,18 +6,31 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public Text pointText;
+    public Text mainText;
+    public Text subText;
     private Animator transitionAnim;
     public static string previousLevel;
 
 
-    public void Setup(int score)
+    public void SetupGameOver(int score)
     {
+        gameObject.SetActive(true);
+        mainText.text = "Game Over";
+        subText.enabled = false;
+        pointText.text = score.ToString() + " Points";
+        transitionAnim = GameObject.Find("WallTransition").GetComponentInChildren<Animator>();
+
+    }
+    public void SetupFinished(int score)
+    {
+        mainText.text = "The End";
+        subText.text = "Thank you for playing the game!";
         gameObject.SetActive(true);
         pointText.text = score.ToString() + " Points";
         transitionAnim = GameObject.Find("WallTransition").GetComponentInChildren<Animator>();
 
     }
-public void RestartButton()
+    public void RestartButton()
     {
         StartCoroutine(Restart());
     }
